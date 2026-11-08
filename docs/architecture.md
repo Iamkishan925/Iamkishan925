@@ -35,6 +35,7 @@ database ports.
 | Module | Phase | Responsibility |
 |---|---|---|
 | `auth`, `audit` | 1 ✅ | login, MFA, sessions, lockout, activity log |
+| `api/chat` | 2 ✅ | conversation storage; `app.state.assistant` hook for the AI |
 | `ai` | 3 | Claude client, model from config, tool registry with per-tool permission |
 | `voice` | 3 | `SpeechToText` / `TextToSpeech` provider interfaces (Google, Azure, ElevenLabs) |
 | `memory` | 4 | user-approved memories, encrypted, view/edit/delete |
@@ -51,7 +52,7 @@ database ports.
 ## Phases
 
 1. Scaffold, auth, dashboard shell, CI, Docker ✅
-2. Premium dashboard, original animated Pari avatar, chat UI
+2. Premium dashboard, original animated Pari avatar, chat UI ✅
 3. Claude conversations (gu/hi/en and mixed), STT/TTS with a female voice
 4. Memory and the integrations framework
 5. Forex data, live charts, news and calendar

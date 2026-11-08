@@ -1,8 +1,14 @@
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useState, type FormEvent } from "react";
 import { api, ApiError, type Me } from "./api";
-import type { Strings } from "./i18n";
+import type { Lang, Strings } from "./i18n";
+import PariAvatar from "./components/PariAvatar";
 
-export default function Login({ s, controls, onLogin }: { s: Strings; controls: ReactNode; onLogin: (m: Me) => void }) {
+export default function Login({ s, lang, setLang, onLogin }: {
+  s: Strings;
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  onLogin: (m: Me) => void;
+}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
@@ -16,7 +22,7 @@ export default function Login({ s, controls, onLogin }: { s: Strings; controls: 
     try {
       onLogin(await api.login(username, password, code));
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Network error");
+      setError(err instanceof ApiError ? err.message : s.networkError);
       setCode("");
     } finally {
       setPassword("");
@@ -25,30 +31,36 @@ export default function Login({ s, controls, onLogin }: { s: Strings; controls: 
   }
 
   return (
-    <main className="min-h-screen flex flex-col px-4">
-      <div className="flex justify-end py-4">{controls}</div>
-      <div className="flex-1 grid place-items-center pb-16">
-        <form onSubmit={submit} className="panel w-full max-w-sm p-6 sm:p-8 space-y-4">
+    <main className="flex min-h-full flex-col px-4">
+      <div className="flex justify-end py-4">
+        <button className="btn-ghost rounded-xl px-3 py-1.5 text-sm" onClick={() => setLang(lang === "gu" ? "en" : "gu")}>
+          {lang === "gu" ? "English" : "ગુજરાતી"}
+        </button>
+      </div>
+      <div className="grid flex-1 place-items-center pb-16">
+        <form onSubmit={submit} className="panel fade-up w-full max-w-sm space-y-4 p-6 sm:p-8">
           <div className="flex flex-col items-center gap-3 pb-2">
-            <div className="orb size-16 rounded-full" />
-            <h1 className="text-2xl font-semibold">Pari</h1>
+            <PariAvatar size={112} state={busy ? "thinking" : "idle"} />
+            <h1 className="font-display gradient-text mt-2 text-3xl font-semibold tracking-[0.2em]">PARI</h1>
             <p className="muted text-sm">{s.tagline}</p>
           </div>
-          <label className="block space-y-1 text-sm">
+          <label className="block space-y-1.5 text-sm">
             <span className="muted">{s.username}</span>
-            <input className="field" autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+            <input className="field" autoComplete="username" autoCapitalize="none" value={username}
+              onChange={(e) => setUsername(e.target.value)} required />
           </label>
-          <label className="block space-y-1 text-sm">
+          <label className="block space-y-1.5 text-sm">
             <span className="muted">{s.password}</span>
-            <input className="field" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input className="field" type="password" autoComplete="current-password" value={password}
+              onChange={(e) => setPassword(e.target.value)} required />
           </label>
-          <label className="block space-y-1 text-sm">
+          <label className="block space-y-1.5 text-sm">
             <span className="muted">{s.code}</span>
-            <input className="field tracking-[0.3em]" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]{6,8}"
-              value={code} onChange={(e) => setCode(e.target.value)} required />
+            <input className="field text-center tracking-[0.4em]" inputMode="numeric" autoComplete="one-time-code"
+              pattern="[0-9 ]{6,8}" maxLength={8} value={code} onChange={(e) => setCode(e.target.value)} required />
           </label>
           {error && <p role="alert" className="text-sm text-red-500">{error}</p>}
-          <button disabled={busy} className="w-full rounded-xl py-2.5 font-medium text-white bg-violet-600 hover:bg-violet-500 disabled:opacity-60">
+          <button type="submit" disabled={busy} className="btn-primary w-full rounded-xl py-3 font-medium disabled:opacity-60">
             {busy ? s.signingIn : s.signIn}
           </button>
         </form>

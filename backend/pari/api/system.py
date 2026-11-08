@@ -14,6 +14,7 @@ router = APIRouter(prefix="/api", tags=["system"])
 MODULES = [
     ("auth", "ready", "Password + TOTP login, sessions, lockout"),
     ("audit", "ready", "Activity log"),
+    ("chat", "ready", "Conversations are saved; AI replies arrive in Phase 3"),
     ("ai", "planned", "Claude conversations - Phase 3"),
     ("voice", "planned", "Speech-to-text and Pari's voice - Phase 3"),
     ("memory", "planned", "Saved preferences you control - Phase 4"),

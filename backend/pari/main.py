@@ -5,7 +5,7 @@ from __future__ import annotations
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from .api import system
+from .api import chat, system
 from .auth import routes as auth_routes
 from .auth.ratelimit import LoginLimiter
 from .auth.security import Cipher
@@ -26,6 +26,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     app.state.db.create_all()
     app.state.cipher = Cipher(cfg.data_key)
     app.state.login_limiter = LoginLimiter(cfg.login_max_failures, cfg.login_lockout_minutes * 60)
+    app.state.assistant = None  # Claude is wired in Phase 3; until then chat says so honestly
 
     @app.middleware("http")
     async def security(request: Request, call_next):
@@ -43,6 +44,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
 
     app.include_router(system.router)
     app.include_router(auth_routes.router)
+    app.include_router(chat.router)
     return app
 
 

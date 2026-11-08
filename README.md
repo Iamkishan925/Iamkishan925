@@ -3,10 +3,15 @@
 MK's personal multilingual AI companion and trading-intelligence platform. It is built in
 phases (see [docs/architecture.md](docs/architecture.md)).
 
-**Current state: Phase 1.** This is the secure foundation: owner login with password +
-authenticator code, device sessions, an activity log, and a dashboard shell (Gujarati/English,
-dark/light, mobile layout). Every other module (AI, voice, memory, market data, trading) is
-**planned and not implemented yet**, and the dashboard says so. Real-money trading is disabled.
+**Current state: Phase 2.** Working now:
+- owner login (password + authenticator code), device sessions and an activity log
+- a startup animation and an original animated Pari avatar (idle, listening, thinking and speaking states)
+- chat with saved conversations, a live microphone waveform (mic test only), and security notifications
+- Gujarati/English, dark/light, desktop sidebar and mobile bottom navigation
+
+**AI replies, speech-to-text and Pari's voice are Phase 3.** Until then chat stores your messages
+and says plainly that the AI isn't connected. It never makes up a reply. Market data and trading
+are later phases, and real-money trading is disabled.
 
 ## Layout
 

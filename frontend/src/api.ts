@@ -37,3 +37,15 @@ export const api = {
   revoke: (id: string) => request("DELETE", `/auth/sessions/${encodeURIComponent(id)}`),
   audit: () => request<AuditRow[]>("GET", "/audit?limit=30"),
 };
+
+export type Conversation = { id: number; title: string; created_at: string; updated_at: string };
+export type ChatMessage = { id: number; role: "user" | "assistant" | "system"; content: string; created_at: string };
+export type SendResult = { message: ChatMessage; reply: ChatMessage | null; notice: string | null };
+
+export const chat = {
+  list: () => request<Conversation[]>("GET", "/chat/conversations"),
+  create: () => request<Conversation>("POST", "/chat/conversations", {}),
+  remove: (id: number) => request("DELETE", `/chat/conversations/${id}`),
+  messages: (id: number) => request<ChatMessage[]>("GET", `/chat/conversations/${id}/messages`),
+  send: (id: number, content: string) => request<SendResult>("POST", `/chat/conversations/${id}/messages`, { content }),
+};
