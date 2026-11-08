@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", "Noto Sans Gujarati", "Noto Sans Devanagari", system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  --bg: #f6f5fb;
+  --panel: #ffffff;
+  --border: #e4e1f0;
+  --text: #17151f;
+  --muted: #6b6780;
+  --accent: #8b5cf6;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: #0b0b14;
+  --panel: #14131f;
+  --border: #26243a;
+  --text: #ece9f7;
+  --muted: #9a96b0;
+  --accent: #c084fc;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.field {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  outline: none;
+}
+.field:focus {
+  border-color: var(--accent);
+}
+
+.orb {
+  background: radial-gradient(circle at 50% 38%, #f0abfc, #a855f7 55%, #312e81);
+  box-shadow: 0 0 40px -6px #a855f7;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .orb {
+    animation: breathe 4s ease-in-out infinite;
+  }
+}
+@keyframes breathe {
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 60px -4px #c084fc;
+  }
+}
